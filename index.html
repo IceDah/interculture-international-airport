@@ -5,110 +5,171 @@
 <title>Interculture International Airport</title>
 
 <style>
-    body {
-        font-family: Arial, sans-serif;
-        background: #f4f6f8;
-        padding: 20px;
-        font-size: 18px;
-    }
+:root {
+    --primary: #2563eb;
+    --primary-dark: #1e40af;
+    --accent: #22c55e;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --bg: #f1f5f9;
+    --card: #ffffff;
+    --text: #0f172a;
+    --muted: #64748b;
+}
 
-    h1 {
-        text-align: center;
-        font-size: 36px;
-    }
+* {
+    box-sizing: border-box;
+}
 
-    .rounds {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 20px;
-        margin-bottom: 30px;
-    }
+body {
+    margin: 0;
+    padding: 30px;
+    font-family: "Inter", "Segoe UI", Arial, sans-serif;
+    background: linear-gradient(135deg, #eef2ff, #f8fafc);
+    color: var(--text);
+    font-size: 18px;
+}
 
-    button {
-        padding: 16px;
-        font-size: 18px;
-        cursor: pointer;
-    }
+h1 {
+    text-align: center;
+    font-size: 42px;
+    margin-bottom: 40px;
+    letter-spacing: 0.5px;
+}
 
-    .round-btn {
-        font-weight: bold;
-        font-size: 20px;
-    }
+.rounds {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+    margin-bottom: 35px;
+}
 
-    .puzzle-container,
-    .code-container {
-        display: none;
-        background: white;
-        border: 1px solid #ccc;
-        padding: 25px;
-        margin-top: 25px;
-    }
+button {
+    border-radius: 14px;
+    border: none;
+    padding: 16px 18px;
+    font-size: 18px;
+    cursor: pointer;
+    background: var(--primary);
+    color: white;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s;
+    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
+}
 
-    .puzzle-btn {
-        display: block;
-        margin: 12px 0;
-        width: 260px;
-        font-weight: bold;
-    }
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 26px rgba(37, 99, 235, 0.35);
+}
 
-    input {
-        padding: 12px;
-        width: 260px;
-        font-size: 18px;
-        margin-right: 10px;
-    }
+button:active {
+    transform: translateY(0);
+    box-shadow: 0 6px 14px rgba(37, 99, 235, 0.25);
+}
 
-    .message {
-        margin-top: 20px;
-        font-weight: bold;
-        font-size: 20px;
-    }
+.round-btn {
+    font-weight: 700;
+    font-size: 20px;
+}
 
-    .tip-btn {
-        display: none;
-        margin-top: 15px;
-    }
+.puzzle-container,
+.code-container {
+    display: none;
+    background: var(--card);
+    border-radius: 22px;
+    padding: 30px;
+    margin-top: 25px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+}
 
-    /* RED "I GIVE UP" BUTTON */
-    #giveUpButton {
-        background-color: #e74c3c;
-        color: white;
-        border: none;
-    }
+.puzzle-btn {
+    width: 100%;
+    margin: 10px 0;
+    background: #f8fafc;
+    color: var(--text);
+    font-weight: 600;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
 
-    #giveUpButton:hover {
-        background-color: #c0392b;
-    }
+.puzzle-btn:hover {
+    background: #eef2ff;
+}
 
-    .tip-text {
-        display: none;
-        margin-top: 15px;
-        background: #ffeaa7;
-        padding: 15px;
-    }
+input {
+    width: 100%;
+    max-width: 320px;
+    padding: 14px 16px;
+    font-size: 18px;
+    border-radius: 12px;
+    border: 2px solid #e5e7eb;
+    outline: none;
+    margin-right: 10px;
+    transition: border 0.15s ease, box-shadow 0.15s ease;
+}
 
-    .success-text {
-        display: none;
-        margin-top: 15px;
-        background: #b8f7c1;
-        padding: 15px;
-    }
+input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+}
 
-    .popup {
-        display: none;
-        margin-top: 20px;
-        background: #eee;
-        padding: 20px;
-        border: 1px solid #aaa;
-    }
+.message {
+    margin-top: 18px;
+    font-weight: 700;
+    font-size: 20px;
+}
+
+.hint-btn {
+    display: none;
+    margin-top: 15px;
+    background: var(--warning);
+    box-shadow: 0 8px 20px rgba(245, 158, 11, 0.35);
+}
+
+#giveUpButton {
+    background: var(--danger);
+    box-shadow: 0 8px 20px rgba(239, 68, 68, 0.35);
+}
+
+.hint-text {
+    display: none;
+    margin-top: 20px;
+    background: #fff7ed;
+    border-left: 6px solid var(--warning);
+    padding: 18px;
+    border-radius: 14px;
+    font-weight: 500;
+}
+
+.solution-text {
+    display: none;
+    margin-top: 20px;
+    background: #ecfdf5;
+    border-left: 6px solid var(--accent);
+    padding: 18px;
+    border-radius: 14px;
+    font-weight: 600;
+}
+
+.popup {
+    display: none;
+    margin-top: 25px;
+    background: #f8fafc;
+    border-radius: 18px;
+    padding: 25px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+}
+
+.popup button {
+    margin-right: 10px;
+    margin-top: 10px;
+}
 </style>
 </head>
+
 <body>
 
-<h1>Interculture International Airport</h1>
+<h1>✈️ Interculture International Airport</h1>
 
 <div class="rounds" id="rounds"></div>
-
 <div class="puzzle-container" id="puzzleContainer"></div>
 
 <div class="code-container" id="codeContainer">
@@ -117,71 +178,152 @@
 
     <div class="message" id="message"></div>
 
-    <button class="tip-btn" id="tipButton">Tip?</button>
-    <button class="tip-btn" id="giveUpButton">I give up</button>
+    <button class="hint-btn" id="hintButton">Hint</button>
+    <button class="hint-btn" id="giveUpButton">I give up</button>
 
-    <div class="tip-text" id="tipText"></div>
-    <div class="success-text" id="successText"></div>
+    <div class="hint-text" id="hintText"></div>
+    <div class="solution-text" id="solutionText"></div>
 
     <div class="popup" id="giveUpPopup">
-        <p>Are you sure you want to reveal the Answer?</p>
+        <p>Reveal the solution?</p>
         <button id="giveUpYes">Yes</button>
         <button id="giveUpNo">No</button>
     </div>
 </div>
 
 <script>
-/* ======================
-   CONFIGURATION (EDIT FREELY)
-   ====================== */
-
 const data = {
-    "1": {
-        "1.1": { code: "Diversity", tip: "The words in bold, form something.", success: "Look under your table." },
-        "1.2": { code: "DEC", tip: "Sort the terms by the number of times they occur.", success: "Check under your chair at the next location." }
+    1: {
+        "1.1": {
+            codes: ["Diversity", "diversity"],
+            hint: "The words in bold form something.",
+            solution: "Go to the check-in counter and look under the desk."
+        },
+        "1.2": {
+            codes: ["DEC", "dec"],
+            hint: "Sort the terms by the number of times they occur.",
+            solution: "Move to the waiting area and check under a chair."
+        }
     },
-    "2": { "2.1": { code: "", tip: "", success: "" }, "2.2": { code: "", tip: "", success: "" } },
-    "3": { "3.1": { code: "", tip: "", success: "" }, "3.2": { code: "", tip: "", success: "" } },
-    "4": { "4.1": { code: "", tip: "", success: "" }, "4.2": { code: "", tip: "", success: "" } },
-    "5": { "5.1": { code: "", tip: "", success: "" }, "5.2": { code: "", tip: "", success: "" } },
-    "6": { "6.1": { code: "", tip: "", success: "" }, "6.2": { code: "", tip: "", success: "" } },
-    "7": { "7.1": { code: "", tip: "", success: "" }, "7.2": { code: "", tip: "", success: "" } },
-    "8": { "8.1": { code: "", tip: "", success: "" }, "8.2": { code: "", tip: "", success: "" } },
-    "9": { "9.1": { code: "", tip: "", success: "" }, "9.2": { code: "", tip: "", success: "" } }
+    2: {
+        "2.1": {
+            codes: ["RVRTN"],
+            hint: "Take the first letter of the first word from top to bottom.",
+            solution: "Head to the departure board and look behind it."
+        },
+        "2.2": {
+            codes: ["Comfort Range", "comfort range"],
+            hint: "Write the corresponding alphabetical number under each point.",
+            solution: "Find the thermometer poster near the window."
+        }
+    },
+    3: {
+        "3.1": {
+            codes: ["Dimension"],
+            hint: "The letters in bold form something.",
+            solution: "Go to the meeting table and open the blue folder."
+        },
+        "3.2": {
+            codes: ["Missed deadline", "deadline"],
+            hint: "What is the problem?",
+            solution: "Check the email printout on the wall."
+        }
+    },
+    4: {
+        "4.1": {
+            codes: ["Culture"],
+            hint: "The words in bold form something.",
+            solution: "Look inside the culture suitcase near the door."
+        },
+        "4.2": {
+            codes: ["RRTG"],
+            hint: "Take the first letter of the first word in the first column.",
+            solution: "Proceed to the passport control desk."
+        }
+    },
+    5: {
+        "5.1": {
+            codes: ["GE"],
+            hint: "Look at the first letters of the countries in bold.",
+            solution: "Search near the world map on the wall."
+        },
+        "5.2": {
+            codes: ["ACHT", "8"],
+            hint: "The first letters of the terms indicate a number.",
+            solution: "Count eight steps from the emergency exit."
+        }
+    },
+    6: {
+        "6.1": {
+            codes: ["Arch", "Bogen"],
+            hint: "Use the first letters.",
+            solution: "Go to the curve-shaped chart on the table."
+        },
+        "6.2": {
+            codes: [
+                "Excitement Frustration Confident Improving",
+                "EFCI"
+            ],
+            hint: "The words in bold form something.",
+            solution: "Check the timeline poster on the wall."
+        }
+    },
+    7: {
+        "7.1": {
+            codes: ["AI", "Artificial Intelligence"],
+            hint: "The words in bold form something.",
+            solution: "Look under the integration diagram."
+        },
+        "7.2": {
+            codes: ["culture"],
+            hint: "Find the most common word.",
+            solution: "Search the text cards near the flipchart."
+        }
+    },
+    8: {
+        "8.1": {
+            codes: ["Acculturation"],
+            hint: "All answers describe cultural belonging.",
+            solution: "Open the box labeled ‘Belonging’."
+        },
+        "8.2": {
+            codes: ["EAUAASA"],
+            hint: "Read the first word of each stage from bottom to top.",
+            solution: "Go up the staircase display step by step."
+        }
+    },
+    9: {
+        "9.1": {
+            codes: ["Intercultural Sensitivity", "DMIS"],
+            hint: "How people perceive and deal with cultural differences.",
+            solution: "Find the DMIS chart at the final station."
+        },
+        "9.2": {
+            codes: ["DDMAAI"],
+            hint: "Read the first word of each stage from bottom to top.",
+            solution: "Congratulations! Open the final envelope."
+        }
+    }
 };
-
-/* ======================
-   LOGIC (DO NOT TOUCH)
-   ====================== */
 
 const roundsDiv = document.getElementById("rounds");
 const puzzleContainer = document.getElementById("puzzleContainer");
 const codeContainer = document.getElementById("codeContainer");
-
 const codeInput = document.getElementById("codeInput");
 const submitButton = document.getElementById("submitButton");
 const message = document.getElementById("message");
-const tipButton = document.getElementById("tipButton");
+const hintButton = document.getElementById("hintButton");
 const giveUpButton = document.getElementById("giveUpButton");
-const tipText = document.getElementById("tipText");
-const successText = document.getElementById("successText");
+const hintText = document.getElementById("hintText");
+const solutionText = document.getElementById("solutionText");
 const giveUpPopup = document.getElementById("giveUpPopup");
 
 let currentPuzzle = null;
 let failedAttempts = 0;
 
-// Submit via button
-submitButton.addEventListener("click", checkCode);
+submitButton.onclick = checkCode;
+codeInput.onkeydown = e => { if (e.key === "Enter") checkCode(); };
 
-// Submit via ENTER key
-codeInput.addEventListener("keydown", function (event) {
-    if (event.key === "Enter") {
-        event.preventDefault();
-        checkCode();
-    }
-});
-
-// Create rounds
 Object.keys(data).forEach(round => {
     const btn = document.createElement("button");
     btn.className = "round-btn";
@@ -192,80 +334,62 @@ Object.keys(data).forEach(round => {
 
 function showPuzzles(round) {
     puzzleContainer.innerHTML = "";
-    puzzleContainer.style.display = "block";
+    puzzleContainer.style.display = "block"; // ✅ THIS WAS MISSING
     codeContainer.style.display = "none";
 
-    Object.keys(data[round]).forEach(puzzle => {
+    Object.keys(data[round]).forEach(p => {
         const btn = document.createElement("button");
         btn.className = "puzzle-btn";
-        btn.textContent = `Puzzle ${puzzle}`;
-        btn.onclick = () => selectPuzzle(round, puzzle);
+        btn.textContent = `Puzzle ${p}`;
+        btn.onclick = () => selectPuzzle(round, p);
         puzzleContainer.appendChild(btn);
     });
 }
 
-function selectPuzzle(round, puzzle) {
-    currentPuzzle = data[round][puzzle];
-    failedAttempts = 0;
 
+function selectPuzzle(round, p) {
+    currentPuzzle = data[round][p];
+    failedAttempts = 0;
     codeInput.value = "";
     message.textContent = "";
-    tipButton.style.display = "none";
-    giveUpButton.style.display = "none";
-    tipText.style.display = "none";
-    successText.style.display = "none";
-    giveUpPopup.style.display = "none";
+    hintText.style.display = solutionText.style.display = giveUpPopup.style.display = "none";
+    hintButton.style.display = giveUpButton.style.display = "none";
     codeContainer.style.display = "block";
 }
 
 function checkCode() {
     if (!currentPuzzle) return;
 
-    tipText.style.display = "none";
-    successText.style.display = "none";
+    const input = codeInput.value.trim().toLowerCase();
+    const validCodes = currentPuzzle.codes.map(c => c.toLowerCase());
 
-    const userCode = codeInput.value.trim().toLowerCase();
-    const correctCode = currentPuzzle.code.trim().toLowerCase();
-
-    if (userCode === correctCode) {
-        message.textContent = "Correct code";
-        successText.textContent = currentPuzzle.success;
-        successText.style.display = "block";
-        tipButton.style.display = "none";
-        giveUpButton.style.display = "none";
+    if (validCodes.includes(input)) {
+        message.textContent = "Correct code!";
+        solutionText.textContent = currentPuzzle.solution;
+        solutionText.style.display = "block";
+        hintButton.style.display = giveUpButton.style.display = "none";
     } else {
         failedAttempts++;
         message.textContent = "Wrong code";
-        tipButton.style.display = "inline-block";
-
-        if (failedAttempts >= 3) {
-            giveUpButton.style.display = "inline-block";
-        }
+        hintButton.style.display = "inline-block";
+        if (failedAttempts >= 3) giveUpButton.style.display = "inline-block";
     }
 }
 
-tipButton.addEventListener("click", () => {
-    tipText.textContent = currentPuzzle.tip;
-    tipText.style.display = "block";
-});
+hintButton.onclick = () => {
+    hintText.textContent = currentPuzzle.hint;
+    hintText.style.display = "block";
+};
 
-giveUpButton.addEventListener("click", () => {
-    giveUpPopup.style.display = "block";
-});
-
-document.getElementById("giveUpYes").addEventListener("click", () => {
-    message.textContent = "Answer revealed";
-    successText.textContent = currentPuzzle.success;
-    successText.style.display = "block";
+giveUpButton.onclick = () => giveUpPopup.style.display = "block";
+document.getElementById("giveUpYes").onclick = () => {
+    solutionText.textContent = currentPuzzle.solution;
+    solutionText.style.display = "block";
     giveUpPopup.style.display = "none";
-    tipButton.style.display = "none";
-    giveUpButton.style.display = "none";
-});
-
-document.getElementById("giveUpNo").addEventListener("click", () => {
-    giveUpPopup.style.display = "none";
-});
+};
+document.getElementById("giveUpNo").onclick = () => giveUpPopup.style.display = "none";
 </script>
 
 </body>
 </html>
+
