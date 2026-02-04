@@ -43,6 +43,9 @@ body {
 .top-left {
   position: fixed;
   top: 18px;
+  <div class="rounds" id="rounds"></div>
+  <div class="puzzle-container" id="puzzleContainer"></div>
+  <div class="code-container" id="codeContainer">
   left: 18px;
   display: flex;
   gap: 10px;
@@ -515,6 +518,19 @@ input:focus {
 
 
 <h1 class="page-title">✈️ Interculture International Airport</h1>
+<!-- Conclusion modal (shows qr.png) -->
+<div class="modal-overlay" id="conclusionOverlay" role="dialog" aria-modal="true" aria-labelledby="conclusionTitle" style="display:none">
+  <div class="modal">
+    <h2 id="conclusionTitle">Conclusion Video</h2>
+    <p style="margin:0 0 8px;">Scan the QR code to view the conclusion video.</p>
+    <div style="text-align:center; padding: 8px 0;">
+      <img id="conclusionQr" src="qr.png" alt="QR code" style="max-width:320px; border-radius:8px; box-shadow: 0 8px 20px rgba(2,6,23,0.12);" />
+    </div>
+    <div class="modal-actions">
+      <button class="secondary" id="conclusionCloseBtn" type="button">Close</button>
+    </div>
+  </div>
+</div>
 
 <div class="rounds" id="rounds"></div>
 <div class="puzzle-container" id="puzzleContainer"></div>
@@ -635,6 +651,8 @@ function isRoundComplete(round) {
   return sortedPuzzles(r).every(pk => isSolved(r, pk));
 }
 function isRoundUnlocked(round) {
+  // If admin session is unlocked, allow access to all rounds
+  if (sessionStorage.getItem("airport_admin_unlocked_v1") === "1") return true;
   const n = Number(round);
   if (n === 1) return true;
   return isRoundComplete(n - 1);
@@ -724,6 +742,9 @@ function unlockAdmin() {
     adminLogin.style.display = "none";
     adminContent.style.display = "block";
     buildAdminList();
+    // refresh rounds/puzzle UI so unlocked state takes effect immediately
+    renderRounds();
+    showPuzzles(currentRound || "1");
   } else {
     adminError.style.display = "block";
   }
@@ -830,6 +851,17 @@ seatingBtn.addEventListener("click", openSeating);
 seatingCloseBtn.addEventListener("click", closeSeating);
 seatingOverlay.addEventListener("click", (e) => { if (e.target === seatingOverlay) closeSeating(); });
 
+/* Conclusion modal behavior */
+const conclusionOverlay = document.getElementById('conclusionOverlay');
+const conclusionCloseBtn = document.getElementById('conclusionCloseBtn');
+function openConclusion() {
+  conclusionOverlay.style.display = 'flex';
+  setTimeout(() => conclusionCloseBtn.focus(), 0);
+}
+function closeConclusion() { conclusionOverlay.style.display = 'none'; }
+conclusionCloseBtn.addEventListener('click', closeConclusion);
+conclusionOverlay.addEventListener('click', (e) => { if (e.target === conclusionOverlay) closeConclusion(); });
+
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape" && helpOverlay.style.display === "flex") closeHelp();
   if (e.key === "Escape" && seatingOverlay.style.display === "flex") closeSeating();
@@ -847,6 +879,15 @@ function renderRounds() {
     btn.disabled = !unlocked;
     if (unlocked) btn.onclick = () => showPuzzles(String(round));
     roundsDiv.appendChild(btn);
+    // If round 9 and puzzle 9.2 is solved (or admin is logged in), add a ConclusionVideo button next to it
+    if (Number(round) === 9 && (isSolved(String(9), "9.2") || sessionStorage.getItem(ADMIN_SESSION_KEY) === "1")) {
+      const conclBtn = document.createElement('button');
+      conclBtn.className = 'round-btn';
+      conclBtn.type = 'button';
+      conclBtn.textContent = 'Conclusion Video';
+      conclBtn.onclick = openConclusion;
+      roundsDiv.appendChild(conclBtn);
+    }
   });
 }
 
@@ -935,6 +976,20 @@ function checkCode() {
     // show solution area + actions
     solutionText.style.display = "block";
 
+    // If Puzzle 9.2 was solved, show the qr code image inline (qr.png)
+    if (currentRound === "9" && currentPuzzleKey === "9.2") {
+      if (!document.getElementById('puzzleQr')) {
+        const qrImg = document.createElement('img');
+        qrImg.id = 'puzzleQr';
+        qrImg.src = 'qr.png';
+        qrImg.alt = 'QR code';
+        qrImg.style.maxWidth = '320px';
+        qrImg.style.display = 'block';
+        qrImg.style.marginTop = '12px';
+        solutionBody.appendChild(qrImg);
+      }
+    }
+
     // build actions
     solutionActions.innerHTML = "";
 
@@ -993,6 +1048,20 @@ document.getElementById("giveUpYes").onclick = () => {
 
   solutionText.style.display = "block";
   giveUpPopup.style.display = "none";
+
+  // If Puzzle 9.2 was solved via Give Up, show the qr code image inline (qr.png)
+  if (currentRound === "9" && currentPuzzleKey === "9.2") {
+    if (!document.getElementById('puzzleQr')) {
+      const qrImg = document.createElement('img');
+      qrImg.id = 'puzzleQr';
+      qrImg.src = 'qr.png';
+      qrImg.alt = 'QR code';
+      qrImg.style.maxWidth = '320px';
+      qrImg.style.display = 'block';
+      qrImg.style.marginTop = '12px';
+      solutionBody.appendChild(qrImg);
+    }
+  }
 
   // build actions (same as correct code)
   solutionActions.innerHTML = "";
@@ -1078,4 +1147,3 @@ showPuzzles("1");
 
 </body>
 </html>
-
